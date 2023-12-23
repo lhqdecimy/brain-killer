@@ -46,12 +46,6 @@ void run(G* g)
 	{
 		switch (*g->c)
 		{
-			case '`':
-				do
-				{
-					g->c++;
-				}while(*g->c!='`' && *g->c!='\0');
-				if (*g->c=='\0') exit(0);
 			case '+':
 				*g->p = *g->p + 1;
 				break;
