@@ -12,7 +12,12 @@ void make(G* g);
 void run(G *g);
 int main(int argc, char **argv)
 {
-	if (argc<2) return 0;
+	if (argc<2)
+	{
+		printf("Hello World!\n");
+		printf("BK - Brain Killer.\n");
+		printf("`bk yourcode.bk` to execute your bk code.\n");
+	}
 	FILE *fp;
 	if (fp = fopen(argv[1], "r"))
 	{
