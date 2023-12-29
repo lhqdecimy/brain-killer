@@ -1,16 +1,9 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdio.h>
-#define MAX 1<<16
-typedef struct
-{
-	char arr[MAX];
-	char code[MAX];
-	char *p;
-	char *c;
-}BK;
-void make(BK*);
-void run(BK*);
+
+#include "bk.h"
+
 int main(int argc, char **argv)
 {
 	if (argc<2)
@@ -23,18 +16,26 @@ int main(int argc, char **argv)
 	if (fp = fopen(argv[1], "r"))
 	{
 		BK bk;
-		char *ch=bk.code;
-		do
-		{
-			*ch = fgetc(fp);
-			ch++;
-		}while(ch-bk.code < MAX);
-		*ch = '\0';
+		read(&bk, fp);
+		fclose(fp);
 		make(&bk);
 		run(&bk);
 	}
 	return 0;
 }
+
+void read(BK *bk, FILE *fp)
+{
+	char *ch=bk->code;
+	do
+	{
+		*ch = fgetc(fp);
+		if (ferror(fp)) exit(1);
+		ch++;
+	}while (ch-bk->code < MAX);
+	*ch = '\0';
+}
+
 void make(BK *bk)
 {
 	bk->p=bk->arr;
