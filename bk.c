@@ -8,9 +8,9 @@ typedef struct
 	char code[MAX];
 	char *p;
 	char *c;
-}G;
-void make(G* g);
-void run(G *g);
+}BK;
+void make(BK*);
+void run(BK*);
 int main(int argc, char **argv)
 {
 	if (argc<2)
@@ -22,103 +22,103 @@ int main(int argc, char **argv)
 	FILE *fp;
 	if (fp = fopen(argv[1], "r"))
 	{
-		G g;
-		char *ch=g.code;
+		BK bk;
+		char *ch=bk.code;
 		do
 		{
 			*ch = fgetc(fp);
 			ch++;
-		}while(ch-g.code < MAX);
+		}while(ch-bk.code < MAX);
 		*ch = '\0';
-		make(&g);
-		run(&g);
+		make(&bk);
+		run(&bk);
 	}
 	return 0;
 }
-void make(G *g)
+void make(BK *bk)
 {
-	g->p=g->arr;
-	g->c=g->code;
+	bk->p=bk->arr;
+	bk->c=bk->code;
 }
 
-void run(G* g)
+void run(BK* bk)
 {
 	int count = 1;
-	while (*g->c != '\0')
+	while (*bk->c != '\0')
 	{
-		switch (*g->c)
+		switch (*bk->c)
 		{
 			case '+':
-				*g->p = *g->p + count;
+				*bk->p = *bk->p + count;
 				break;
 			case '-':
-				*g->p = *g->p - count;
+				*bk->p = *bk->p - count;
 				break;
 			case '>':
-				g->p += count;
+				bk->p += count;
 				break;
 			case '<':
-				g->p -= count;
+				bk->p -= count;
 				break;
 			case '.':
-				putchar(*g->p);
+				putchar(*bk->p);
 				break;
 			case ',':
-				*g->p = getchar();
+				*bk->p = getchar();
 				break;
 			case '=':
-				g->p = g->arr + *g->p;
+				bk->p = bk->arr + *bk->p;
 			case '[':
-				if (!(*g->p))
+				if (!(*bk->p))
 				{
 					int count = 1;
 					do
 					{
-						g->c++;
-						if (*g->c == '[') count++;
-						if (*g->c == ']') count--;
-					}while(count && !(*g->c=='\0'));
-					if (*g->c=='\0') exit(0);
+						bk->c++;
+						if (*bk->c == '[') count++;
+						if (*bk->c == ']') count--;
+					}while(count && !(*bk->c=='\0'));
+					if (*bk->c=='\0') exit(0);
 				}
 				break;
 			case ']':
-				if (*g->p)
+				if (*bk->p)
 				{
 					int count = 1;
 					do
 					{
-						g->c--;
-						if (*g->c == ']') count++;
-						if (*g->c == '[') count--;
-					}while(count && !(g->c < g->code));
-					if (g->c < g->code) exit(0);
+						bk->c--;
+						if (*bk->c == ']') count++;
+						if (*bk->c == '[') count--;
+					}while(count && !(bk->c < bk->code));
+					if (bk->c < bk->code) exit(0);
 				}
 				break;
 			case '(':
-				if (!(*g->p))
+				if (!(*bk->p))
 				{
 					int count = 1;
 					do
 					{
-						g->c++;
-						if (*g->c == '(') count++;
-						if (*g->c == ')') count--;
-					}while(count && !(*g->c=='\0'));
-					if (*g->c=='\0') exit(0);
+						bk->c++;
+						if (*bk->c == '(') count++;
+						if (*bk->c == ')') count--;
+					}while(count && !(*bk->c=='\0'));
+					if (*bk->c=='\0') exit(0);
 				}
 				break;
 			default:
-				if (isdigit(*g->c))
+				if (isdigit(*bk->c))
 				{
-					sscanf(g->c, "%d", &count);
+					sscanf(bk->c, "%d", &count);
 					do
 					{
-						g->c++;
-					}while (isdigit(*g->c));
+						bk->c++;
+					}while (isdigit(*bk->c));
 					continue;
 				}
 		}
 		count = 1;
-		g->c++;
+		bk->c++;
 	}
 }
