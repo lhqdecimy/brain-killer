@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <ctype.h>
 #include <stdio.h>
 #define MAX 1<<16
 typedef struct
@@ -42,21 +43,22 @@ void make(G *g)
 
 void run(G* g)
 {
+	int count = 1;
 	while (*g->c != '\0')
 	{
 		switch (*g->c)
 		{
 			case '+':
-				*g->p = *g->p + 1;
+				*g->p = *g->p + count;
 				break;
 			case '-':
-				*g->p = *g->p - 1;
+				*g->p = *g->p - count;
 				break;
 			case '>':
-				g->p++;
+				g->p += count;
 				break;
 			case '<':
-				g->p--;
+				g->p -= count;
 				break;
 			case '.':
 				putchar(*g->p);
@@ -105,7 +107,18 @@ void run(G* g)
 					if (*g->c=='\0') exit(0);
 				}
 				break;
+			default:
+				if (isdigit(*g->c))
+				{
+					sscanf(g->c, "%d", &count);
+					do
+					{
+						g->c++;
+					}while (isdigit(*g->c));
+					continue;
+				}
 		}
+		count = 1;
 		g->c++;
 	}
 }
