@@ -31,6 +31,7 @@ void read(BK *bk, FILE *fp)
 	char *ch=bk->code;
 	do
 	{
+		if (feof(fp)) break;
 		*ch = fgetc(fp);
 		if (ferror(fp)) exit(1);
 		ch++;
@@ -106,7 +107,7 @@ void run(BK* bk)
 						if (*bk->c == '[') count++;
 						if (*bk->c == ']') count--;
 					}while(count && !(*bk->c=='\0'));
-					if (*bk->c=='\0') exit(0);
+					if (*bk->c=='\0') return;
 				}
 				break;
 			case ']':
@@ -119,7 +120,7 @@ void run(BK* bk)
 						if (*bk->c == ']') count++;
 						if (*bk->c == '[') count--;
 					}while(count && !(bk->c < bk->code));
-					if (bk->c < bk->code) exit(0);
+					if (bk->c < bk->code) return;
 				}
 				break;
 			case '(':
@@ -132,7 +133,7 @@ void run(BK* bk)
 						if (*bk->c == '(') count++;
 						if (*bk->c == ')') count--;
 					}while(count && !(*bk->c=='\0'));
-					if (*bk->c=='\0') exit(0);
+					if (*bk->c=='\0') return;
 				}
 				break;
 			default:
