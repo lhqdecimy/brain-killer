@@ -60,10 +60,14 @@ char *pop(PStack *ps)
 void run(BK* bk)
 {
 	int count = 1;
+	
 	while (*bk->c != '\0')
 	{
 		switch (*bk->c)
 		{
+			case '\'':
+				*bk->p = *++(bk->c);
+				break;
 			case '{':
 				push(bk->pstack, bk->p);
 				break;
@@ -78,9 +82,11 @@ void run(BK* bk)
 				break;
 			case '>':
 				bk->p += count;
+				if (bk->p - bk->arr >= MAX) bk->p = bk->arr;
 				break;
 			case '<':
 				bk->p -= count;
+				if (bk->p < bk->arr) bk->p = &bk->arr[MAX];
 				break;
 			case '.':
 				putchar(*bk->p);
