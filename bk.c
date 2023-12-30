@@ -42,13 +42,13 @@ void make(BK *bk)
 {
 	bk->p=bk->arr;
 	bk->c=bk->code;
+	bk->pstack->top = bk->pstack->p;
 }
 
 void push(PStack *ps, char *p)
 {
 	if (ps->top - ps->p >= MAX>>6) exit(1);
-	*ps->top = p;
-	ps->top++;
+	*(ps->top)++ = p;
 }
 
 char *pop(PStack *ps)
