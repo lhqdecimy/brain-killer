@@ -16,6 +16,8 @@ int main(int argc, char **argv)
 	if (fp = fopen(argv[1], "r"))
 	{
 		BK bk;
+		PStack pstack;
+		bk.pstack = &pstack;
 		read(&bk, fp);
 		fclose(fp);
 		make(&bk);
@@ -42,6 +44,19 @@ void make(BK *bk)
 	bk->c=bk->code;
 }
 
+void push(PStack *ps, char *p)
+{
+	if (ps->top - ps->p >= MAX>>6) exit(1);
+	*ps->top = p;
+	ps->top++;
+}
+
+char *pop(PStack *ps)
+{
+	if (ps->top == ps->p) exit(1);
+	return *--(ps->top);
+}
+
 void run(BK* bk)
 {
 	int count = 1;
@@ -49,6 +64,12 @@ void run(BK* bk)
 	{
 		switch (*bk->c)
 		{
+			case '{':
+				push(bk->pstack, bk->p);
+				break;
+			case '}':
+				bk->p = pop(bk->pstack);
+				break;
 			case '+':
 				*bk->p = *bk->p + count;
 				break;
