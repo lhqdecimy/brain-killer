@@ -61,11 +61,30 @@ char *pop(PStack *ps)
 void run(BK* bk)
 {
 	int count = 1;
+	int in_str = 0;
 	
 	while (*bk->c != '\0')
 	{
+		if (in_str)
+		{
+			if (*bk->c == '"')
+			{
+				in_str = 0;
+			}
+			else
+			{
+				*bk->p = *bk->c;
+			}
+			bk->p++;
+			bk->c++;
+			continue;
+		}
+			
 		switch (*bk->c)
 		{
+			case '"':
+				in_str = 1;
+				break;
 			case '\'':
 				*bk->p = *++(bk->c);
 				break;
