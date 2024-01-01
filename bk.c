@@ -149,12 +149,25 @@ void run(BK* bk)
 					do
 					{
 						bk->c++;
-						if (*bk->c == '(') count++;
+						if (*bk->c == '(' || *bk->c == '|') count++;
 						if (*bk->c == ')') count--;
 					}while(count && !(*bk->c=='\0'));
 					if (*bk->c=='\0') return;
 				}
 				break;
+            case '|':
+                if (*bk->p)
+                {
+                    int count = 1;
+                    do
+                    {
+						bk->c++;
+						if (*bk->c == '(' || *bk->c == '|') count++;
+						if (*bk->c == ')') count--;
+					}while(count && !(*bk->c=='\0'));
+					if (*bk->c=='\0') return;
+                }
+                break;
 			default:
 				if (isdigit(*bk->c))
 				{
